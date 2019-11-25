@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+
+  "name": "Notion-OCR Plugin",
+  "description": "This enables ocr support in images in Notion",
+  "version": "0.0.1",
+
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+
+  "permissions": ["activeTab",  "cookies", "https://www.notion.so/"]
+}
