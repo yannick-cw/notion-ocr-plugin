@@ -6,11 +6,38 @@ import Bootstrap.ButtonGroup as ButtonGroup
 import Bootstrap.CDN as CDN
 import Bootstrap.Grid as Grid
 import Browser
-import Html exposing (Html, button, div, h6, img, text)
-import Html.Attributes exposing (src)
+import Html exposing (Html, button, div, h6, text)
 import Html.Events exposing (onClick)
-import Maybe exposing (withDefault)
+import Http
 import Ports exposing (askToken, notionToken)
+
+
+
+-- stubs
+
+
+getInitState : Cmd Msg
+getInitState =
+    Http.get
+        { url = "https://elm-lang.org/assets/public-opinion.txt"
+        , expect = Http.expectString GotSyncState
+        }
+
+
+setSyncState : String -> SyncState -> Cmd Msg
+setSyncState _ _ =
+    Http.get
+        { url = "https://elm-lang.org/assets/public-opinion.txt"
+        , expect = Http.expectString SetSyncStateRes
+        }
+
+
+runOnce : String -> Cmd Msg
+runOnce _ =
+    Http.get
+        { url = "https://elm-lang.org/assets/public-opinion.txt"
+        , expect = Http.expectString RunOnceRes
+        }
 
 
 
@@ -31,7 +58,7 @@ type SyncState
 
 init : ( Model, Cmd Msg )
 init =
-    ( { token = Nothing, showNoTokenFound = False, syncState = SyncOff }, Cmd.none )
+    ( { token = Nothing, showNoTokenFound = False, syncState = SyncOff }, askToken () )
 
 
 
@@ -40,27 +67,50 @@ init =
 
 type Msg
     = GotToken (Maybe String)
-    | AskToken
+    | RunOnce
     | SyncState SyncState
+    | GotSyncState (Result Http.Error String)
+    | SetSyncStateRes (Result Http.Error String)
+    | RunOnceRes (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotToken (Just token) ->
-            ( { model | token = Just token, showNoTokenFound = False }, Cmd.none )
+            ( { model | token = Just token, showNoTokenFound = False }, getInitState )
 
         GotToken Nothing ->
             ( { model | showNoTokenFound = True, syncState = SyncOff }, Cmd.none )
 
-        AskToken ->
-            ( model, askToken () )
+        RunOnce ->
+            case model.token of
+                Just c ->
+                    ( model, runOnce c )
 
-        SyncState SyncOff ->
-            ( { model | syncState = SyncOff }, Cmd.none )
+                Nothing ->
+                    -- Erro Msg here
+                    ( model, Cmd.none )
 
-        SyncState SyncOn ->
-            ( { model | syncState = SyncOn }, askToken () )
+        SyncState syncState ->
+            case model.token of
+                Just c ->
+                    ( { model | syncState = syncState }, setSyncState c syncState )
+
+                Nothing ->
+                    -- Erro Msg here
+                    ( { model | syncState = SyncOff }, Cmd.none )
+
+        GotSyncState _ ->
+            ( { model | syncState = SyncOn }, Cmd.none )
+
+        SetSyncStateRes _ ->
+            -- err or success msg here
+            ( model, Cmd.none )
+
+        RunOnceRes _ ->
+            -- err or success msg here
+            ( model, Cmd.none )
 
 
 
@@ -72,13 +122,13 @@ view model =
     let
         errorMsg =
             if model.showNoTokenFound then
-                [ Alert.simpleDanger [] [ text "Could not find your token, please log in to Notion and try again" ] ]
+                [ Alert.simpleDanger [] [ text "Can not find your token, please log-in to Notion and try again" ] ]
 
             else
                 []
 
         runSyncBtn =
-            div [] [ Button.button [ Button.primary, Button.onClick AskToken ] [ text "Run Once" ] ]
+            div [] [ Button.button [ Button.primary, Button.onClick RunOnce ] [ text "Run Once" ] ]
 
         toggleBtns =
             div []
@@ -117,19 +167,6 @@ view model =
                 ]
             ]
         ]
-
-
-
---div
---[]
---([ img [ src "/logo.svg" ] []
---, h1 [] [ text "Your Elm App is working!" ]
---, h1 [] [ text (withDefault "No token loaded" model.token) ]
---, button [ onClick AskToken ] [ text "Sync Notion" ]
---]
---++ errorMsg
---)
----- Subs ----
 
 
 subscriptions : Model -> Sub Msg
