@@ -13,6 +13,12 @@ import Ports exposing (askToken, notionToken)
 
 
 
+-- TODO
+-- real http endpoints, generated from servant
+-- error handling, when token can not be loaded, run fails, sync status?
+-- styling
+-- additional information link
+
 -- stubs
 
 
