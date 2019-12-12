@@ -1,0 +1,62 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: f71b68187add0c451b6cf165fa5b5b8ca7e019fe513da487d5aa77a632b4c47c
+
+name:           notion-ocr-servive
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-servive#readme>
+homepage:       https://github.com/yannick-cw/notion-ocr-plug#readme
+bug-reports:    https://github.com/yannick-cw/notion-ocr-plug/issues
+author:         Yannick Gladow
+maintainer:     yannick.gladow@gmail.com
+copyright:      2019 Yannick Gladow
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/yannick-cw/notion-ocr-plug
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_notion_ocr_servive
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable notion-ocr-servive-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_notion_ocr_servive
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , notion-ocr-servive
+  default-language: Haskell2010
+
+test-suite notion-ocr-servive-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_notion_ocr_servive
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , notion-ocr-servive
+  default-language: Haskell2010
