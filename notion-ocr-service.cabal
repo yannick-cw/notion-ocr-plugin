@@ -1,0 +1,113 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: b8e483e70c7abb959cd53e0999dc607b1f7590b18f4c0074e95087a3bd46753c
+
+name:           notion-ocr-service
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-service#readme>
+homepage:       https://github.com/yannick-cw/notion-ocr-plug#readme
+bug-reports:    https://github.com/yannick-cw/notion-ocr-plug/issues
+author:         Yannick Gladow
+maintainer:     yannick.gladow@gmail.com
+copyright:      2019 Yannick Gladow
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/yannick-cw/notion-ocr-plug
+
+library
+  exposed-modules:
+      ElmGen.Generate
+      Http.Api
+      Http.Server
+      Lib
+  other-modules:
+      Paths_notion_ocr_service
+  hs-source-dirs:
+      src
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , elm-bridge
+    , servant
+    , servant-elm
+    , servant-server
+    , text
+    , time
+    , wai
+    , warp
+  default-language: Haskell2010
+
+executable elm-gen-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_notion_ocr_service
+  hs-source-dirs:
+      gen
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , elm-bridge
+    , notion-ocr-service
+    , servant
+    , servant-elm
+    , servant-server
+    , text
+    , time
+    , wai
+    , warp
+  default-language: Haskell2010
+
+executable notion-ocr-service-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_notion_ocr_service
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , elm-bridge
+    , notion-ocr-service
+    , servant
+    , servant-elm
+    , servant-server
+    , text
+    , time
+    , wai
+    , warp
+  default-language: Haskell2010
+
+test-suite notion-ocr-service-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_notion_ocr_service
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , elm-bridge
+    , notion-ocr-service
+    , servant
+    , servant-elm
+    , servant-server
+    , text
+    , time
+    , wai
+    , warp
+  default-language: Haskell2010
