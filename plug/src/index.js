@@ -19,7 +19,7 @@ const sendNotionToken = () => {
       }
     );
   } else {
-    app.ports.notionToken.send(null);
+    app.ports.notionToken.send("dev");
   }
 };
 

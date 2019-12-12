@@ -5,49 +5,50 @@ tests:
     source-dirs: test
     main: Spec.hs
     ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
     dependencies:
-      - notion-ocr-service
+    - notion-ocr-service
 copyright: 2019 Yannick Gladow
 maintainer: yannick.gladow@gmail.com
 dependencies:
-  - wai
-  - warp
-  - servant-server
-  - aeson
-  - time
-  - text
-  - servant
-  - servant-elm
-  - elm-bridge
-  - base >= 4.7 && < 5
+- wai-cors
+- wai
+- warp
+- servant-server
+- aeson
+- time
+- text
+- servant
+- servant-elm
+- elm-bridge
+- base >= 4.7 && < 5
 name: notion-ocr-service
 version: 0.1.0.0
 extra-source-files:
-  - README.md
-  - ChangeLog.md
+- README.md
+- ChangeLog.md
 author: Yannick Gladow
 github: yannick-cw/notion-ocr-plug
 license: BSD3
 executables:
-  notion-ocr-service-exe:
-    source-dirs: app
-    main: Main.hs
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-    dependencies:
-      - notion-ocr-service
   elm-gen-exe:
     source-dirs: gen
     main: Main.hs
     ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
     dependencies:
-      - notion-ocr-service
+    - notion-ocr-service
+  notion-ocr-service-exe:
+    source-dirs: app
+    main: Main.hs
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - notion-ocr-service
 description: Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-service#readme>

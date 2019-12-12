@@ -2,6 +2,7 @@ module Http.Server where
 
 import           Http.Api
 import           Servant
+import           Network.Wai.Middleware.Cors    ( simpleCors )
 
 initState = Just (InitState SyncOn)
 
@@ -12,4 +13,4 @@ ocrApi :: Proxy OcrApi
 ocrApi = Proxy
 
 app :: Application
-app = serve ocrApi server
+app = simpleCors $ serve ocrApi server

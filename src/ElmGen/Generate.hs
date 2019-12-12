@@ -13,11 +13,18 @@ import           Servant.Elm                    ( DefineElm(DefineElm)
                                                 , defElmImports
                                                 , defElmOptions
                                                 , generateElmModuleWith
+                                                , ElmOptions
+                                                , urlPrefix
+                                                , UrlPrefix(..)
                                                 )
 
+myElmOpts :: ElmOptions
+myElmOpts = defElmOptions { urlPrefix = Static "http://localhost:8081" }
+
+
 gen :: IO ()
-gen = (print "Generating...") *> generateElmModuleWith
-  defElmOptions
+gen = print "Generating..." *> generateElmModuleWith
+  myElmOpts
   ["Generated", "OcrApi"]
   defElmImports
   "plug/src"

@@ -6,6 +6,7 @@ import Bootstrap.ButtonGroup as ButtonGroup
 import Bootstrap.CDN as CDN
 import Bootstrap.Grid as Grid
 import Browser
+import Generated.OcrApi exposing (getGetInitState)
 import Html exposing (Html, button, div, h6, text)
 import Html.Events exposing (onClick)
 import Http
@@ -18,16 +19,7 @@ import Ports exposing (askToken, notionToken)
 -- error handling, when token can not be loaded, run fails, sync status?
 -- styling
 -- additional information link
-
 -- stubs
-
-
-getInitState : Cmd Msg
-getInitState =
-    Http.get
-        { url = "https://elm-lang.org/assets/public-opinion.txt"
-        , expect = Http.expectString GotSyncState
-        }
 
 
 setSyncState : String -> SyncState -> Cmd Msg
@@ -75,7 +67,7 @@ type Msg
     = GotToken (Maybe String)
     | RunOnce
     | SyncState SyncState
-    | GotSyncState (Result Http.Error String)
+    | GotSyncState (Result Http.Error (Maybe Generated.OcrApi.SyncState))
     | SetSyncStateRes (Result Http.Error String)
     | RunOnceRes (Result Http.Error String)
 
@@ -84,7 +76,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotToken (Just token) ->
-            ( { model | token = Just token, showNoTokenFound = False }, getInitState )
+            ( { model | token = Just token, showNoTokenFound = False }, getGetInitState (Just token) GotSyncState )
 
         GotToken Nothing ->
             ( { model | showNoTokenFound = True, syncState = SyncOff }, Cmd.none )
@@ -107,8 +99,11 @@ update msg model =
                     -- Erro Msg here
                     ( { model | syncState = SyncOff }, Cmd.none )
 
-        GotSyncState _ ->
+        GotSyncState (Ok (Just Generated.OcrApi.SyncOn)) ->
             ( { model | syncState = SyncOn }, Cmd.none )
+
+        GotSyncState _ ->
+            ( { model | syncState = SyncOff }, Cmd.none )
 
         SetSyncStateRes _ ->
             -- err or success msg here
