@@ -6,10 +6,7 @@
 
 module Http.Api where
 
-import           Data.Text
-import           Data.Time                      ( UTCTime )
 import           Servant.API
-import           Data.Aeson                     ( ToJSON )
 import           Data.Aeson.Types               ( Options(..) )
 import           GHC.Generics
 import           Elm.Derive                     ( defaultOptions

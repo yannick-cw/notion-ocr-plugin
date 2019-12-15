@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f03b7fe4975af36e2e0f650e3d45c49b40a9ceabb64ca9a9b57936c1b3aa689d
+-- hash: 3711087685f544c3b732aa89d2cfa9c30866a0da18abf35eb4e5f320127e26c5
 
 name:           notion-ocr-service
 version:        0.1.0.0
@@ -35,6 +35,7 @@ library
       Paths_notion_ocr_service
   hs-source-dirs:
       src
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -fno-warn-orphans -fwarn-unused-imports -fwarn-unused-binds -isrc -Widentities
   build-depends:
       aeson
     , base >=4.7 && <5

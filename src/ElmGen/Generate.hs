@@ -23,7 +23,7 @@ myElmOpts = defElmOptions { urlPrefix = Static "http://localhost:8081" }
 
 
 gen :: IO ()
-gen = print "Generating..." *> generateElmModuleWith
+gen = putStrLn "Generating..." *> generateElmModuleWith
   myElmOpts
   ["Generated", "OcrApi"]
   defElmImports

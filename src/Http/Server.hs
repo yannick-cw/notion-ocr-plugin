@@ -4,6 +4,7 @@ import           Http.Api
 import           Servant
 import           Network.Wai.Middleware.Cors    ( simpleCors )
 
+initState :: Maybe InitState
 initState = Just (InitState SyncOn)
 
 server :: Server OcrApi
