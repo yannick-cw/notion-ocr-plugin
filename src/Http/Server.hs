@@ -7,7 +7,8 @@ import           Network.Wai.Middleware.Cors    ( simpleCors )
 initState = Just (InitState SyncOn)
 
 server :: Server OcrApi
-server _ = return initState
+server =
+  (\_ -> return initState) :<|> (\_ -> return ()) :<|> (\_ _ -> return ())
 
 ocrApi :: Proxy OcrApi
 ocrApi = Proxy

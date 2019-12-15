@@ -17,7 +17,9 @@ import           Elm.Derive                     ( defaultOptions
                                                 )
 
 type OcrApi
-  = "getInitState" :> QueryParam "token" String :> Get '[JSON] (Maybe InitState)
+  = "getInitState" :> QueryParam "token" String :> Get '[JSON] (Maybe InitState) 
+  :<|> "runOnce" :> QueryParam "token" String :> Post  '[JSON] () 
+  :<|> "setSyncState" :> QueryParam "token" String :> ReqBody '[JSON] SyncState :> Post '[JSON] ()
 
 newtype InitState = InitState { syncState :: SyncState } deriving (Eq, Show, Generic)
 data SyncState = SyncOn | SyncOff deriving (Eq, Show, Generic)

@@ -6,7 +6,7 @@ import Bootstrap.ButtonGroup as ButtonGroup
 import Bootstrap.CDN as CDN
 import Bootstrap.Grid as Grid
 import Browser
-import Generated.OcrApi exposing (getGetInitState)
+import Generated.OcrApi as OcrApi exposing (getGetInitState, postRunOnce, postSetSyncState)
 import Html exposing (Html, button, div, h6, text)
 import Html.Events exposing (onClick)
 import Http
@@ -15,30 +15,9 @@ import Ports exposing (askToken, notionToken)
 
 
 -- TODO
--- real http endpoints, generated from servant
 -- error handling, when token can not be loaded, run fails, sync status?
 -- styling
 -- additional information link
--- stubs
-
-
-setSyncState : String -> SyncState -> Cmd Msg
-setSyncState _ _ =
-    Http.get
-        { url = "https://elm-lang.org/assets/public-opinion.txt"
-        , expect = Http.expectString SetSyncStateRes
-        }
-
-
-runOnce : String -> Cmd Msg
-runOnce _ =
-    Http.get
-        { url = "https://elm-lang.org/assets/public-opinion.txt"
-        , expect = Http.expectString RunOnceRes
-        }
-
-
-
 ---- MODEL ----
 
 
@@ -67,9 +46,9 @@ type Msg
     = GotToken (Maybe String)
     | RunOnce
     | SyncState SyncState
-    | GotSyncState (Result Http.Error (Maybe Generated.OcrApi.SyncState))
-    | SetSyncStateRes (Result Http.Error String)
-    | RunOnceRes (Result Http.Error String)
+    | GotSyncState (Result Http.Error (Maybe OcrApi.InitState))
+    | SetSyncStateRes (Result Http.Error ())
+    | RunOnceRes (Result Http.Error ())
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -84,7 +63,7 @@ update msg model =
         RunOnce ->
             case model.token of
                 Just c ->
-                    ( model, runOnce c )
+                    ( model, postRunOnce (Just c) RunOnceRes )
 
                 Nothing ->
                     -- Erro Msg here
@@ -93,14 +72,14 @@ update msg model =
         SyncState syncState ->
             case model.token of
                 Just c ->
-                    ( { model | syncState = syncState }, setSyncState c syncState )
+                    ( { model | syncState = syncState }, postSetSyncState (Just c) (syncStateToApiSync syncState) SetSyncStateRes )
 
                 Nothing ->
                     -- Erro Msg here
                     ( { model | syncState = SyncOff }, Cmd.none )
 
-        GotSyncState (Ok (Just Generated.OcrApi.SyncOn)) ->
-            ( { model | syncState = SyncOn }, Cmd.none )
+        GotSyncState (Ok (Just (OcrApi.InitState initState))) ->
+            ( { model | syncState = apiSyncToSyncState initState.syncState }, Cmd.none )
 
         GotSyncState _ ->
             ( { model | syncState = SyncOff }, Cmd.none )
@@ -112,6 +91,26 @@ update msg model =
         RunOnceRes _ ->
             -- err or success msg here
             ( model, Cmd.none )
+
+
+syncStateToApiSync : SyncState -> OcrApi.SyncState
+syncStateToApiSync ss =
+    case ss of
+        SyncOn ->
+            OcrApi.SyncOn
+
+        SyncOff ->
+            OcrApi.SyncOff
+
+
+apiSyncToSyncState : OcrApi.SyncState -> SyncState
+apiSyncToSyncState ss =
+    case ss of
+        OcrApi.SyncOn ->
+            SyncOn
+
+        OcrApi.SyncOff ->
+            SyncOff
 
 
 

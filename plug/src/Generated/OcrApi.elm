@@ -79,3 +79,69 @@ getGetInitState query_token toMsg =
             , tracker =
                 Nothing
             }
+
+postRunOnce : (Maybe String) -> (Result Http.Error  (())  -> msg) -> Cmd msg
+postRunOnce query_token toMsg =
+    let
+        params =
+            List.filterMap identity
+            (List.concat
+                [ [ query_token
+                    |> Maybe.map (Url.Builder.string "token") ]
+                ])
+    in
+        Http.request
+            { method =
+                "POST"
+            , headers =
+                []
+            , url =
+                Url.Builder.crossOrigin "http://localhost:8081"
+                    [ "runOnce"
+                    ]
+                    params
+            , body =
+                Http.emptyBody
+            , expect =
+                Http.expectString 
+                     (\x -> case x of
+                     Err e -> toMsg (Err e)
+                     Ok _ -> toMsg (Ok ()))
+            , timeout =
+                Nothing
+            , tracker =
+                Nothing
+            }
+
+postSetSyncState : (Maybe String) -> SyncState -> (Result Http.Error  (())  -> msg) -> Cmd msg
+postSetSyncState query_token body toMsg =
+    let
+        params =
+            List.filterMap identity
+            (List.concat
+                [ [ query_token
+                    |> Maybe.map (Url.Builder.string "token") ]
+                ])
+    in
+        Http.request
+            { method =
+                "POST"
+            , headers =
+                []
+            , url =
+                Url.Builder.crossOrigin "http://localhost:8081"
+                    [ "setSyncState"
+                    ]
+                    params
+            , body =
+                Http.jsonBody (jsonEncSyncState body)
+            , expect =
+                Http.expectString 
+                     (\x -> case x of
+                     Err e -> toMsg (Err e)
+                     Ok _ -> toMsg (Ok ()))
+            , timeout =
+                Nothing
+            , tracker =
+                Nothing
+            }
