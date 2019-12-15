@@ -18,6 +18,9 @@ import Ports exposing (askToken, notionToken)
 -- error handling, when token can not be loaded, run fails, sync status?
 -- styling
 -- additional information link
+-- Rate limit single runs e.g. (3/100) in February
+-- Next scheduled run e.g. Syncing in 50 minutes
+-- synced images / and used limit of images per month
 ---- MODEL ----
 
 
