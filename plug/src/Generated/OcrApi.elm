@@ -17,14 +17,20 @@ maybeBoolToIntStr mx =
     Just True -> "1"
     Just False -> "0"
 
-type alias InitState  = SyncState
+type InitState  = InitState
+   { syncState: SyncState
+   }
 
 jsonDecInitState : Json.Decode.Decoder ( InitState )
 jsonDecInitState =
-    jsonDecSyncState
+   Json.Decode.succeed (\psyncState -> (InitState {syncState = psyncState}))
+   |> required "syncState" (jsonDecSyncState)
 
 jsonEncInitState : InitState -> Value
-jsonEncInitState  val = jsonEncSyncState val
+jsonEncInitState  (InitState val) =
+   Json.Encode.object
+   [ ("syncState", jsonEncSyncState val.syncState)
+   ]
 
 
 

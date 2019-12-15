@@ -10,6 +10,7 @@ import           Data.Text
 import           Data.Time                      ( UTCTime )
 import           Servant.API
 import           Data.Aeson                     ( ToJSON )
+import           Data.Aeson.Types               ( Options(..) )
 import           GHC.Generics
 import           Elm.Derive                     ( defaultOptions
                                                 , deriveBoth
@@ -21,7 +22,7 @@ type OcrApi
 newtype InitState = InitState { syncState :: SyncState } deriving (Eq, Show, Generic)
 data SyncState = SyncOn | SyncOff deriving (Eq, Show, Generic)
 
-deriveBoth defaultOptions ''InitState
+deriveBoth ( defaultOptions { unwrapUnaryRecords = False }) ''InitState
 deriveBoth defaultOptions ''SyncState
 
 
