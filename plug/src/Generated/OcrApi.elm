@@ -50,7 +50,7 @@ jsonEncSyncState  val =
         SyncOff -> Json.Encode.string "SyncOff"
 
 
-getGetInitState : (Maybe String) -> (Result Http.Error  ((Maybe InitState))  -> msg) -> Cmd msg
+getGetInitState : (Maybe String) -> (Result Http.Error  (InitState)  -> msg) -> Cmd msg
 getGetInitState query_token toMsg =
     let
         params =
@@ -73,7 +73,7 @@ getGetInitState query_token toMsg =
             , body =
                 Http.emptyBody
             , expect =
-                Http.expectJson toMsg (Json.Decode.maybe (jsonDecInitState))
+                Http.expectJson toMsg jsonDecInitState
             , timeout =
                 Nothing
             , tracker =

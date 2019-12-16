@@ -9,14 +9,15 @@ module Http.Api where
 import           Servant.API
 import           Data.Aeson.Types               ( Options(..) )
 import           GHC.Generics
+import           Data.Text
 import           Elm.Derive                     ( defaultOptions
                                                 , deriveBoth
                                                 )
 
 type OcrApi
-  = "getInitState" :> QueryParam "token" String :> Get '[JSON] (Maybe InitState) 
-  :<|> "runOnce" :> QueryParam "token" String :> Post  '[JSON] () 
-  :<|> "setSyncState" :> QueryParam "token" String :> ReqBody '[JSON] SyncState :> Post '[JSON] ()
+  = "getInitState" :> QueryParam "token" Text :> Get '[JSON] InitState 
+  :<|> "runOnce" :> QueryParam "token" Text :> Post  '[JSON] () 
+  :<|> "setSyncState" :> QueryParam "token" Text :> ReqBody '[JSON] SyncState :> Post '[JSON] ()
 
 newtype InitState = InitState { syncState :: SyncState } deriving (Eq, Show, Generic)
 data SyncState = SyncOn | SyncOff deriving (Eq, Show, Generic)

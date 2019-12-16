@@ -49,7 +49,7 @@ type Msg
     = GotToken (Maybe String)
     | RunOnce
     | SyncState SyncState
-    | GotSyncState (Result Http.Error (Maybe OcrApi.InitState))
+    | GotSyncState (Result Http.Error OcrApi.InitState)
     | SetSyncStateRes (Result Http.Error ())
     | RunOnceRes (Result Http.Error ())
 
@@ -81,7 +81,7 @@ update msg model =
                     -- Erro Msg here
                     ( { model | syncState = SyncOff }, Cmd.none )
 
-        GotSyncState (Ok (Just (OcrApi.InitState initState))) ->
+        GotSyncState (Ok (OcrApi.InitState initState)) ->
             ( { model | syncState = apiSyncToSyncState initState.syncState }, Cmd.none )
 
         GotSyncState _ ->

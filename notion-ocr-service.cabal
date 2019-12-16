@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3711087685f544c3b732aa89d2cfa9c30866a0da18abf35eb4e5f320127e26c5
+-- hash: a5df224d45f1d43cd75f81fb2362fdc841c70d36eadf99596f3facd729e75b4f
 
 name:           notion-ocr-service
 version:        0.1.0.0
@@ -27,10 +27,15 @@ source-repository head
 
 library
   exposed-modules:
+      AppM
       ElmGen.Generate
       Http.Api
       Http.Server
+      InitState
       Lib
+      Repos.DB
+      Repos.Notion
+      RunOnce
   other-modules:
       Paths_notion_ocr_service
   hs-source-dirs:
@@ -40,6 +45,7 @@ library
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , mtl
     , servant
     , servant-elm
     , servant-server
@@ -61,6 +67,7 @@ executable elm-gen-exe
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , mtl
     , notion-ocr-service
     , servant
     , servant-elm
@@ -83,6 +90,7 @@ executable notion-ocr-service-exe
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , mtl
     , notion-ocr-service
     , servant
     , servant-elm
@@ -106,6 +114,7 @@ test-suite notion-ocr-service-test
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , mtl
     , notion-ocr-service
     , servant
     , servant-elm
