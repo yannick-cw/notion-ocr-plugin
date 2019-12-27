@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Http.Server where
 
@@ -9,16 +10,23 @@ import           AppM
 import           InitState
 import           Repos.DB
 import           Repos.Notion
-import           Control.Monad.Except           ( withExceptT )
+import           Repos.Ocr
+import           Control.Monad.Except           ( withExceptT
+                                                , MonadError
+                                                )
+import           Data.Text                      ( Text )
 import           Data.Text.Lazy.Encoding        ( encodeUtf8 )
 import           Data.Text.Lazy                 ( fromStrict )
+import           RunOnce
 
 initState :: InitState
 initState = InitState SyncOn
 
-server :: (Monad m, DB m, Notion m) => ServerT OcrApi m
+server :: (DB m, Notion m, Ocr m, MonadError Text m) => ServerT OcrApi m
 server =
-  (maybe (fail "") getInitState) :<|> (\_ -> return ()) :<|> (\_ _ -> return ())
+  maybe (fail "") getInitState
+    :<|> maybe (fail "") runOnce
+    :<|> (\_ _ -> return ())
 
 ocrApi :: Proxy OcrApi
 ocrApi = Proxy

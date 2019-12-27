@@ -3,6 +3,7 @@
 
 module InitState
   ( getInitState
+  , getOrCreateUser
   , NotionUser(..)
   )
 where
@@ -14,13 +15,18 @@ import           Repos.Notion
 
 
 getInitState :: (DB m, Notion m, Monad m) => Text -> m InitState
-getInitState tkn = do
-  maybeUser <- findInitState tkn
-  user      <- maybe (createUser tkn) return maybeUser
-  let mapSyncState = case syncSetting user of
-        Sync   -> SyncOn
-        NoSync -> SyncOff
-  return $ InitState { syncState = mapSyncState }
+getInitState =
+  fmap
+      (\user -> InitState
+        { syncState = case syncSetting user of
+                        Sync   -> SyncOn
+                        NoSync -> SyncOff
+        }
+      )
+    . getOrCreateUser
+
+getOrCreateUser :: (DB m, Notion m, Monad m) => Text -> m User
+getOrCreateUser tkn = findInitState tkn >>= maybe (createUser tkn) return
 
 createUser :: (Monad m, Notion m, DB m) => Text -> m User
 createUser tkn = do
