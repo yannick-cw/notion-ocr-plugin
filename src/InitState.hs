@@ -35,7 +35,7 @@ createUser tkn = do
   insertUser user
   return user
  where
-  newUser nId = User { notionId             = nId
+  newUser nId = User { notionId             = NotionId nId
                      , token                = tkn
                      , syncSetting          = NoSync
                      , singleRunsInMonth    = 0

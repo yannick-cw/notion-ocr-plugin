@@ -22,3 +22,4 @@ runOnce tkn = do
   user <- getOrCreateUser tkn
   guardM (isEligible user) "Can not run once"
   runOcr tkn
+  addRunsUsed $ notionId user
