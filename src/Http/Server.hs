@@ -18,6 +18,7 @@ import           Data.Text                      ( Text )
 import           Data.Text.Lazy.Encoding        ( encodeUtf8 )
 import           Data.Text.Lazy                 ( fromStrict )
 import           RunOnce
+import           SetSyncState
 
 initState :: InitState
 initState = InitState SyncOn
@@ -26,7 +27,7 @@ server :: (DB m, Notion m, Ocr m, MonadError Text m) => ServerT OcrApi m
 server =
   maybe (fail "") getInitState
     :<|> maybe (fail "") runOnce
-    :<|> (\_ _ -> return ())
+    :<|> maybe (fail "") setSyncState
 
 ocrApi :: Proxy OcrApi
 ocrApi = Proxy

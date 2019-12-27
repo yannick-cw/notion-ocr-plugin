@@ -28,9 +28,11 @@ class DB m where
   insertUser :: User -> m ()
   addRunsUsed :: NotionId -> m ()
   addImagesUsed :: NotionId -> m ()
+  setUserSyncState :: NotionId -> UserSyncState -> m ()
 
 instance DB AppM where
   findInitState = undefined
   insertUser    = undefined
   addRunsUsed   = undefined
   addImagesUsed = undefined
+  setUserSyncState  = undefined
