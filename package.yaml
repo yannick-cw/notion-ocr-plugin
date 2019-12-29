@@ -12,7 +12,7 @@ library:
   - -isrc
   - -Widentities
 tests:
-  notion-ocr-service-test:
+  notion-ocr-plugin-test:
     source-dirs: test
     main: Spec.hs
     ghc-options:
@@ -20,7 +20,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - notion-ocr-service
+    - notion-ocr-plugin
 copyright: 2019 Yannick Gladow
 maintainer: yannick.gladow@gmail.com
 dependencies:
@@ -36,7 +36,7 @@ dependencies:
 - servant-elm
 - elm-bridge
 - base >= 4.7 && < 5
-name: notion-ocr-service
+name: notion-ocr-plugin
 version: 0.1.0.0
 extra-source-files:
 - README.md
@@ -53,8 +53,8 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - notion-ocr-service
-  notion-ocr-service-exe:
+    - notion-ocr-plugin
+  notion-ocr-plugin-exe:
     source-dirs: app
     main: Main.hs
     ghc-options:
@@ -62,5 +62,5 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - notion-ocr-service
-description: Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-service#readme>
+    - notion-ocr-plugin
+description: Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-plugin#readme>

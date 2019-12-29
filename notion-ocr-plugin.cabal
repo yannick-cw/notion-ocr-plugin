@@ -4,11 +4,11 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a8a33fc9c6386629c462bc56abdda27f7a0c07605d7d141c15f42317fd29adf5
+-- hash: 6a3b0ef2b8ad59317ed60f2d89c68396fdc75ccbbfaee190658fc419baf887fc
 
-name:           notion-ocr-service
+name:           notion-ocr-plugin
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-service#readme>
+description:    Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-plugin#readme>
 homepage:       https://github.com/yannick-cw/notion-ocr-plug#readme
 bug-reports:    https://github.com/yannick-cw/notion-ocr-plug/issues
 author:         Yannick Gladow
@@ -41,7 +41,7 @@ library
       SetSyncState
       Util.Utils
   other-modules:
-      Paths_notion_ocr_service
+      Paths_notion_ocr_plugin
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -fno-warn-orphans -fwarn-unused-imports -fwarn-unused-binds -isrc -Widentities
@@ -63,7 +63,7 @@ library
 executable elm-gen-exe
   main-is: Main.hs
   other-modules:
-      Paths_notion_ocr_service
+      Paths_notion_ocr_plugin
   hs-source-dirs:
       gen
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -72,7 +72,7 @@ executable elm-gen-exe
     , base >=4.7 && <5
     , elm-bridge
     , mtl
-    , notion-ocr-service
+    , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
@@ -83,10 +83,10 @@ executable elm-gen-exe
     , warp
   default-language: Haskell2010
 
-executable notion-ocr-service-exe
+executable notion-ocr-plugin-exe
   main-is: Main.hs
   other-modules:
-      Paths_notion_ocr_service
+      Paths_notion_ocr_plugin
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -95,7 +95,7 @@ executable notion-ocr-service-exe
     , base >=4.7 && <5
     , elm-bridge
     , mtl
-    , notion-ocr-service
+    , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
@@ -106,11 +106,11 @@ executable notion-ocr-service-exe
     , warp
   default-language: Haskell2010
 
-test-suite notion-ocr-service-test
+test-suite notion-ocr-plugin-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_notion_ocr_service
+      Paths_notion_ocr_plugin
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -119,7 +119,7 @@ test-suite notion-ocr-service-test
     , base >=4.7 && <5
     , elm-bridge
     , mtl
-    , notion-ocr-service
+    , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server

@@ -25,9 +25,10 @@ initState = InitState SyncOn
 
 server :: (DB m, Notion m, Ocr m, MonadError Text m) => ServerT OcrApi m
 server =
-  maybe (fail "") getInitState
-    :<|> maybe (fail "") runOnce
-    :<|> maybe (fail "") setSyncState
+  maybe (fail missingTkn) getInitState
+    :<|> maybe (fail missingTkn) runOnce
+    :<|> maybe (fail missingTkn) setSyncState
+  where missingTkn = "Please specify the token parameter"
 
 ocrApi :: Proxy OcrApi
 ocrApi = Proxy
