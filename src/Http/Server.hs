@@ -33,9 +33,11 @@ ocrApi :: Proxy OcrApi
 ocrApi = Proxy
 
 nt :: AppM a -> Handler a
-nt x = Handler
-  (withExceptT (\e -> err500 { errBody = encodeUtf8 $ fromStrict e }) (unwrap x)
-  )
+nt =
+  Handler
+    . withExceptT (\e -> err500 { errBody = encodeUtf8 $ fromStrict e })
+    . unwrap
+
 
 app :: Application
 app = simpleCors $ serve ocrApi $ hoistServer ocrApi nt server

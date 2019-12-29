@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ddce1f1a822851a53a4a9d85a6adf49d62631d50736c5fe8f0ad6d9feca8ceef
+-- hash: a8a33fc9c6386629c462bc56abdda27f7a0c07605d7d141c15f42317fd29adf5
 
 name:           notion-ocr-service
 version:        0.1.0.0
@@ -37,6 +37,8 @@ library
       Repos.Notion
       Repos.Ocr
       RunOnce
+      ScheduledRun
+      SetSyncState
       Util.Utils
   other-modules:
       Paths_notion_ocr_service
