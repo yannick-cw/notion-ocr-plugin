@@ -3,7 +3,21 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    size: 4172703
+    url: https://github.com/yannick-cw/notion-ocr/archive/d323ae367d8379213ebd3d62b2ba71ed483abe3d.tar.gz
+    cabal-file:
+      size: 3068
+      sha256: fe2d5bdd82da35a5b672399b1fc4b499b2ad47618427dcea089df9925635e50b
+    name: notion-ocr
+    version: 0.1.5
+    sha256: 46d83db759f587995572a21d0fe0b8cc74009d9060819e4f15c374ae6148c8a0
+    pantry-tree:
+      size: 1331
+      sha256: 537c628eac3f0d18d1ea7b8ea5acb06e0393584ec0ff73cc43c6c587cc8a632c
+  original:
+    url: https://github.com/yannick-cw/notion-ocr/archive/d323ae367d8379213ebd3d62b2ba71ed483abe3d.tar.gz
 snapshots:
 - completed:
     size: 524799

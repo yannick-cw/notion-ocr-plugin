@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6a3b0ef2b8ad59317ed60f2d89c68396fdc75ccbbfaee190658fc419baf887fc
+-- hash: 290f2d82ad86bb32a39c416e883500a31a45d38d34203a41dbfbd4b6ef6e4e47
 
 name:           notion-ocr-plugin
 version:        0.1.0.0
@@ -49,12 +49,16 @@ library
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , exceptions
     , mtl
+    , notion-ocr
     , servant
     , servant-elm
     , servant-server
+    , temporary
     , text
     , time
+    , transformers
     , wai
     , wai-cors
     , warp
@@ -71,13 +75,17 @@ executable elm-gen-exe
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , exceptions
     , mtl
+    , notion-ocr
     , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
+    , temporary
     , text
     , time
+    , transformers
     , wai
     , wai-cors
     , warp
@@ -94,13 +102,17 @@ executable notion-ocr-plugin-exe
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , exceptions
     , mtl
+    , notion-ocr
     , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
+    , temporary
     , text
     , time
+    , transformers
     , wai
     , wai-cors
     , warp
@@ -118,13 +130,17 @@ test-suite notion-ocr-plugin-test
       aeson
     , base >=4.7 && <5
     , elm-bridge
+    , exceptions
     , mtl
+    , notion-ocr
     , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
+    , temporary
     , text
     , time
+    , transformers
     , wai
     , wai-cors
     , warp

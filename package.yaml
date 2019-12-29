@@ -24,6 +24,8 @@ tests:
 copyright: 2019 Yannick Gladow
 maintainer: yannick.gladow@gmail.com
 dependencies:
+- transformers
+- temporary
 - mtl
 - wai-cors
 - wai
@@ -35,6 +37,7 @@ dependencies:
 - servant
 - servant-elm
 - elm-bridge
+- notion-ocr
 - base >= 4.7 && < 5
 name: notion-ocr-plugin
 version: 0.1.0.0
@@ -45,8 +48,8 @@ author: Yannick Gladow
 github: yannick-cw/notion-ocr-plug
 license: BSD3
 executables:
-  elm-gen-exe:
-    source-dirs: gen
+  notion-ocr-plugin-exe:
+    source-dirs: app
     main: Main.hs
     ghc-options:
     - -threaded
@@ -54,8 +57,8 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - notion-ocr-plugin
-  notion-ocr-plugin-exe:
-    source-dirs: app
+  elm-gen-exe:
+    source-dirs: gen
     main: Main.hs
     ghc-options:
     - -threaded
