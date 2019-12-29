@@ -27,6 +27,7 @@ dependencies:
 - transformers
 - temporary
 - mtl
+- stm
 - wai-cors
 - wai
 - warp

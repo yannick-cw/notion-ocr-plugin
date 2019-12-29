@@ -8,7 +8,7 @@ import qualified "notion-ocr" AppM             as OcrAppM
 import           Data.Text
 import           Updater                        ( updateOcrs )
 import           Control.Monad.Except           ( mapExceptT )
-import           Control.Monad.Reader           ( runReaderT )
+import           Control.Monad.Reader           ( withReaderT )
 import           CliParser
 import           System.IO.Temp                 ( withSystemTempDirectory )
 
@@ -21,12 +21,13 @@ instance Ocr AppM where
     $ withSystemTempDirectory "notion_ocr_plug" transformOcrAppToAppM
    where
     transformOcrAppToAppM tmpFile = mapExceptT
-      (`runReaderT` (Args { tempPath    = tmpFile
-                          , notionToken = tkn
-                          , schedule    = Nothing
-                          , verbose     = True
-                          }
-                    )
+      (withReaderT $ const
+        (Args { tempPath    = tmpFile
+              , notionToken = tkn
+              , schedule    = Nothing
+              , verbose     = True
+              }
+        )
       )
       (OcrAppM.unwrap updateOcrs)
 

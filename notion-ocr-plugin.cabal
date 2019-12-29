@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 290f2d82ad86bb32a39c416e883500a31a45d38d34203a41dbfbd4b6ef6e4e47
+-- hash: 303542396e2665c4ccdc8085a30f0d5ec28f7f66c164d289b512774003bb4ad6
 
 name:           notion-ocr-plugin
 version:        0.1.0.0
@@ -33,6 +33,7 @@ library
       Http.Server
       InitState
       Lib
+      Model
       Repos.DB
       Repos.Notion
       Repos.Ocr
@@ -49,12 +50,12 @@ library
       aeson
     , base >=4.7 && <5
     , elm-bridge
-    , exceptions
     , mtl
     , notion-ocr
     , servant
     , servant-elm
     , servant-server
+    , stm
     , temporary
     , text
     , time
@@ -75,13 +76,13 @@ executable elm-gen-exe
       aeson
     , base >=4.7 && <5
     , elm-bridge
-    , exceptions
     , mtl
     , notion-ocr
     , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
+    , stm
     , temporary
     , text
     , time
@@ -102,13 +103,13 @@ executable notion-ocr-plugin-exe
       aeson
     , base >=4.7 && <5
     , elm-bridge
-    , exceptions
     , mtl
     , notion-ocr
     , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
+    , stm
     , temporary
     , text
     , time
@@ -130,13 +131,13 @@ test-suite notion-ocr-plugin-test
       aeson
     , base >=4.7 && <5
     , elm-bridge
-    , exceptions
     , mtl
     , notion-ocr
     , notion-ocr-plugin
     , servant
     , servant-elm
     , servant-server
+    , stm
     , temporary
     , text
     , time

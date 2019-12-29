@@ -6,22 +6,16 @@ module Repos.DB
   )
 where
 
-import           Data.Text
-import           Data.Time                      ( UTCTime )
+import           Data.Text                      ( Text )
 import           AppM
-
-newtype NotionId = NotionId Text
-
-data UserSyncState = Sync | NoSync
-data User = User { notionId :: NotionId,
-                   token :: Text,
-                   syncSetting :: UserSyncState,
-                   singleRunsInMonth :: Int,
-                   allowedRunsInMonth :: Int,
-                   imagesInMonth :: Int,
-                   allowedImagesInMonth :: Int,
-                   lastSync :: Maybe UTCTime }
-
+import           Model
+import           Control.Monad.Reader           ( ask )
+import           Control.Concurrent.STM.TVar    ( readTVarIO
+                                                , writeTVar
+                                                )
+import           Control.Monad.IO.Class         ( liftIO )
+import           Data.List                      ( find )
+import           GHC.Conc                       ( atomically )
 
 class DB m where
   findInitState :: Text -> m (Maybe User)
@@ -32,9 +26,21 @@ class DB m where
   getAllUsers :: m [User]
 
 instance DB AppM where
-  findInitState    = undefined
-  insertUser       = undefined
-  addRunsUsed      = undefined
+  findInitState tkn = do
+    State { users = us } <- ask
+    users'               <- liftIO $ readTVarIO us
+    return (find ((== tkn) . token) users')
+  insertUser user = do
+    State { users = us } <- ask
+    users'               <- liftIO $ readTVarIO us
+    liftIO $ atomically $ writeTVar us (user : users')
+  addRunsUsed _ = undefined--do
+    --State { users = us } <- ask
+    --users'               <- liftIO $ readTVarIO us
+    --let user = (find ((== nId) . notionId) users')
+    --let updatedUser =
+          --(\u -> u { singleRunsInMonth = singleRunsInMonth u + 1 }) <$> user
+    --return $ maybe (return ()) (atomically $ writeTVar )
   addImagesUsed    = undefined
   setUserSyncState = undefined
   getAllUsers      = undefined

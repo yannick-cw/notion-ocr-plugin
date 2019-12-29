@@ -11,15 +11,26 @@ import           Control.Concurrent             ( forkIO
                                                 )
 import           Control.Exception              ( bracket )
 import           Control.Monad.Except           ( runExceptT )
+import           Control.Monad.Reader           ( runReaderT )
 import           ScheduledRun
-import           AppM                           ( AppM(..) )
+import           AppM                           ( AppM(..)
+                                                , State(..)
+                                                )
 import qualified Data.Text.IO                  as TIO
                                                 ( putStrLn )
+import           Control.Concurrent.STM.TVar    ( newTVar )
+import           Control.Monad.STM              ( atomically )
+
 
 someFunc :: IO ()
-someFunc = bracket (forkIO $ run 8081 app) killThread $ \_ -> runScheduled
-  (either TIO.putStrLn (const $ return ()) =<< runExceptT (unwrap updateAll))
-  30
+someFunc = do
+  tvar <- atomically (newTVar [])
+  let s = State tvar
+  bracket (forkIO $ run 8081 (app s)) killThread $ \_ -> runScheduled
+    (   either TIO.putStrLn (const $ return ())
+    =<< runReaderT (runExceptT (unwrap updateAll)) s
+    )
+    30
 
 runScheduled :: IO () -> Int -> IO ()
 runScheduled job pauseTimeMinutes = do

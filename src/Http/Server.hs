@@ -13,7 +13,9 @@ import           Repos.Notion
 import           Repos.Ocr
 import           Control.Monad.Except           ( withExceptT
                                                 , MonadError
+                                                , mapExceptT
                                                 )
+import           Control.Monad.Reader           ( runReaderT )
 import           Data.Text                      ( Text )
 import           Data.Text.Lazy.Encoding        ( encodeUtf8 )
 import           Data.Text.Lazy                 ( fromStrict )
@@ -33,14 +35,15 @@ server =
 ocrApi :: Proxy OcrApi
 ocrApi = Proxy
 
-nt :: AppM a -> Handler a
-nt =
+nt :: State -> AppM a -> Handler a
+nt s =
   Handler
+    . mapExceptT (`runReaderT` s)
     . withExceptT (\e -> err500 { errBody = encodeUtf8 $ fromStrict e })
     . unwrap
 
 
-app :: Application
-app = simpleCors $ serve ocrApi $ hoistServer ocrApi nt server
+app :: State -> Application
+app s = simpleCors $ serve ocrApi $ hoistServer ocrApi (nt s) server
 
 
