@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module Repos.DB
   ( DB(..)
   , User(..)
@@ -11,6 +13,7 @@ import           AppM
 import           Model
 import           Control.Monad.Reader           ( ask )
 import           Control.Concurrent.STM.TVar    ( readTVarIO
+                                                , TVar
                                                 , writeTVar
                                                 )
 import           Control.Monad.IO.Class         ( liftIO )
@@ -27,20 +30,38 @@ class DB m where
 
 instance DB AppM where
   findInitState tkn = do
-    State { users = us } <- ask
-    users'               <- liftIO $ readTVarIO us
+    (users', _) <- readUsrs
     return (find ((== tkn) . token) users')
+
   insertUser user = do
-    State { users = us } <- ask
-    users'               <- liftIO $ readTVarIO us
+    (users', us) <- readUsrs
     liftIO $ atomically $ writeTVar us (user : users')
-  addRunsUsed _ = undefined--do
-    --State { users = us } <- ask
-    --users'               <- liftIO $ readTVarIO us
-    --let user = (find ((== nId) . notionId) users')
-    --let updatedUser =
-          --(\u -> u { singleRunsInMonth = singleRunsInMonth u + 1 }) <$> user
-    --return $ maybe (return ()) (atomically $ writeTVar )
-  addImagesUsed    = undefined
-  setUserSyncState = undefined
-  getAllUsers      = undefined
+
+  addRunsUsed nId = do
+    (users', us) <- readUsrs
+    let updateSync u = u { singleRunsInMonth = singleRunsInMonth u + 1 }
+    let updatedUsers = updateFieldOnId nId updateSync users'
+    liftIO $ atomically $ writeTVar us updatedUsers
+
+  addImagesUsed nId = do
+    (users', us) <- readUsrs
+    let updateSync u = u { imagesInMonth = imagesInMonth u + 1 }
+    let updatedUsers = updateFieldOnId nId updateSync users'
+    liftIO $ atomically $ writeTVar us updatedUsers
+
+  setUserSyncState nId syncState = do
+    (users', us) <- readUsrs
+    let updateSync u = u { syncSetting = syncState }
+    let updatedUsers = updateFieldOnId nId updateSync users'
+    liftIO $ atomically $ writeTVar us updatedUsers
+
+  getAllUsers = fst <$> readUsrs
+
+readUsrs :: AppM ([User], TVar [User])
+readUsrs = do
+  State { users = us } <- ask
+  liftIO $ (, us) <$> readTVarIO us
+
+updateFieldOnId :: NotionId -> (User -> User) -> [User] -> [User]
+updateFieldOnId nId f users' =
+  (\user -> if notionId user == nId then f user else user) <$> users'
