@@ -1,5 +1,3 @@
-{-# LANGUAGE TupleSections #-}
-
 module Repos.DB
   ( DB(..)
   , User(..)
@@ -13,8 +11,7 @@ import           AppM
 import           Model
 import           Control.Monad.Reader           ( ask )
 import           Control.Concurrent.STM.TVar    ( readTVarIO
-                                                , TVar
-                                                , writeTVar
+                                                , modifyTVar
                                                 )
 import           Control.Monad.IO.Class         ( liftIO )
 import           Data.List                      ( find )
@@ -30,37 +27,32 @@ class DB m where
 
 instance DB AppM where
   findInitState tkn = do
-    (users', _) <- readUsrs
+    State { users = us } <- ask
+    users'               <- liftIO $ readTVarIO us
     return (find ((== tkn) . token) users')
 
-  insertUser user = do
-    (users', us) <- readUsrs
-    liftIO $ atomically $ writeTVar us (user : users')
+  insertUser user = updateUsers (user :)
 
-  addRunsUsed nId = do
-    (users', us) <- readUsrs
-    let updateSync u = u { singleRunsInMonth = singleRunsInMonth u + 1 }
-    let updatedUsers = updateFieldOnId nId updateSync users'
-    liftIO $ atomically $ writeTVar us updatedUsers
+  addRunsUsed nId =
+    let updateRuns u = u { singleRunsInMonth = singleRunsInMonth u + 1 }
+    in  updateUsers $ updateFieldOnId nId updateRuns
 
-  addImagesUsed nId = do
-    (users', us) <- readUsrs
-    let updateSync u = u { imagesInMonth = imagesInMonth u + 1 }
-    let updatedUsers = updateFieldOnId nId updateSync users'
-    liftIO $ atomically $ writeTVar us updatedUsers
+  addImagesUsed nId =
+    let updateImages u = u { imagesInMonth = imagesInMonth u + 1 }
+    in  updateUsers $ updateFieldOnId nId updateImages
 
-  setUserSyncState nId syncState = do
-    (users', us) <- readUsrs
+  setUserSyncState nId syncState =
     let updateSync u = u { syncSetting = syncState }
-    let updatedUsers = updateFieldOnId nId updateSync users'
-    liftIO $ atomically $ writeTVar us updatedUsers
+    in  updateUsers $ updateFieldOnId nId updateSync
 
-  getAllUsers = fst <$> readUsrs
+  getAllUsers = do
+    State { users = us } <- ask
+    liftIO $ readTVarIO us
 
-readUsrs :: AppM ([User], TVar [User])
-readUsrs = do
+updateUsers :: ([User] -> [User]) -> AppM ()
+updateUsers f = do
   State { users = us } <- ask
-  liftIO $ (, us) <$> readTVarIO us
+  liftIO $ atomically $ modifyTVar us f
 
 updateFieldOnId :: NotionId -> (User -> User) -> [User] -> [User]
 updateFieldOnId nId f users' =
