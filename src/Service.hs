@@ -30,7 +30,7 @@ someFunc = do
     (   either TIO.putStrLn (const $ return ())
     =<< runReaderT (runExceptT (unwrap updateAll)) s
     )
-    2
+    1
 
 runScheduled :: IO () -> Int -> IO ()
 runScheduled job pauseTimeMinutes = do

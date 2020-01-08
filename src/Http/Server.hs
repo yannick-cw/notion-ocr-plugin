@@ -5,7 +5,13 @@ module Http.Server where
 
 import           Http.Api
 import           Servant
-import           Network.Wai.Middleware.Cors    ( simpleCors )
+import           Network.Wai                    ( Middleware )
+import           Network.Wai.Middleware.Cors    ( CorsResourcePolicy
+                                                , corsMethods
+                                                , corsRequestHeaders
+                                                , cors
+                                                , simpleCorsResourcePolicy
+                                                )
 import           AppM
 import           InitState
 import           Repos.DB
@@ -44,6 +50,14 @@ nt s =
 
 
 app :: State -> Application
-app s = simpleCors $ serve ocrApi $ hoistServer ocrApi (nt s) server
+app s = allowCors $ serve ocrApi $ hoistServer ocrApi (nt s) server
 
 
+allowCors :: Middleware
+allowCors = cors (const $ Just appCorsResourcePolicy)
+
+appCorsResourcePolicy :: CorsResourcePolicy
+appCorsResourcePolicy = simpleCorsResourcePolicy
+  { corsMethods        = ["OPTIONS", "GET", "PUT", "POST"]
+  , corsRequestHeaders = ["Authorization", "Content-Type"]
+  }
