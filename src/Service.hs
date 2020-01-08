@@ -1,4 +1,4 @@
-module Lib
+module Service
   ( someFunc
   )
 where
@@ -30,7 +30,7 @@ someFunc = do
     (   either TIO.putStrLn (const $ return ())
     =<< runReaderT (runExceptT (unwrap updateAll)) s
     )
-    30
+    2
 
 runScheduled :: IO () -> Int -> IO ()
 runScheduled job pauseTimeMinutes = do

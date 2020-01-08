@@ -24,6 +24,13 @@ tests:
 copyright: 2019 Yannick Gladow
 maintainer: yannick.gladow@gmail.com
 dependencies:
+- unordered-containers
+- lens
+- http-client
+- bytestring
+- lens-aeson
+- wreq
+- uuid
 - transformers
 - temporary
 - mtl
