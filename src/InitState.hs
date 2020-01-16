@@ -12,13 +12,15 @@ import           Http.Api
 import           Data.Text
 import           Repos.DB
 import           Repos.Notion
+import           Control.Lens
+import           Model
 
 
 getInitState :: (DB m, Notion m, Monad m) => Text -> m InitState
 getInitState =
   fmap
       (\user -> InitState
-        { syncState = case syncSetting user of
+        { syncState = case user ^. syncSetting of
                         Sync   -> SyncOn
                         NoSync -> SyncOff
         }
@@ -35,13 +37,13 @@ createUser tkn = do
   insertUser user
   return user
  where
-  newUser nId = User { notionId             = NotionId nId
-                     , token                = tkn
-                     , syncSetting          = NoSync
-                     , singleRunsInMonth    = 0
-                     , allowedRunsInMonth   = 100
-                     , imagesInMonth        = 0
-                     , allowedImagesInMonth = 100
-                     , lastSync             = Nothing
+  newUser nId = User { _notionId             = NotionId nId
+                     , _token                = tkn
+                     , _syncSetting          = NoSync
+                     , _singleRunsInMonth    = 0
+                     , _allowedRunsInMonth   = 100
+                     , _imagesInMonth        = 0
+                     , _allowedImagesInMonth = 100
+                     , _lastSync             = Nothing
                      }
 

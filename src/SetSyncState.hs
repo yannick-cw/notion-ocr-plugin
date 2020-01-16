@@ -12,12 +12,14 @@ import           InitState                      ( getOrCreateUser )
 import           Repos.DB
 import           Repos.Notion
 import           Http.Api                       ( SyncState(..) )
+import           Control.Lens
+import           Model
 
 setSyncState :: (DB m, Notion m, Monad m) => Text -> SyncState -> m ()
 setSyncState tkn syncState = do
   user <- getOrCreateUser tkn
   setUserSyncState
-    (notionId user)
+    (user ^. notionId)
     (case syncState of
       SyncOn  -> Sync
       SyncOff -> NoSync

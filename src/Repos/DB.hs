@@ -16,6 +16,7 @@ import           Control.Concurrent.STM.TVar    ( readTVarIO
 import           Control.Monad.IO.Class         ( liftIO )
 import           Data.List                      ( find )
 import           GHC.Conc                       ( atomically )
+import           Control.Lens
 
 class DB m where
   findInitState :: Text -> m (Maybe User)
@@ -29,21 +30,18 @@ instance DB AppM where
   findInitState tkn = do
     State { users = us } <- ask
     users'               <- liftIO $ readTVarIO us
-    return (find ((== tkn) . token) users')
+    return (find ((== tkn) . view token) users')
 
   insertUser user = updateUsers (user :)
 
   addRunsUsed nId =
-    let updateRuns u = u { singleRunsInMonth = singleRunsInMonth u + 1 }
-    in  updateUsers $ updateFieldOnId nId updateRuns
+    updateUsers $ updateFieldOnId nId (singleRunsInMonth %~ (+ 1))
 
   addImagesUsed nId =
-    let updateImages u = u { imagesInMonth = imagesInMonth u + 1 }
-    in  updateUsers $ updateFieldOnId nId updateImages
+    updateUsers $ updateFieldOnId nId (imagesInMonth %~ (+ 1))
 
   setUserSyncState nId syncState =
-    let updateSync u = u { syncSetting = syncState }
-    in  updateUsers $ updateFieldOnId nId updateSync
+    updateUsers $ updateFieldOnId nId (syncSetting .~ syncState)
 
   getAllUsers = do
     State { users = us } <- ask
@@ -56,4 +54,4 @@ updateUsers f = do
 
 updateFieldOnId :: NotionId -> (User -> User) -> [User] -> [User]
 updateFieldOnId nId f users' =
-  (\user -> if notionId user == nId then f user else user) <$> users'
+  (\user -> if user ^. notionId == nId then f user else user) <$> users'
