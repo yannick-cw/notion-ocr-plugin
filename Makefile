@@ -1,12 +1,4 @@
-all: build
-
-build: client-build server-build
-
-client-build:
-	stack build && stack exec elm-gen-exe
-
-server-build:
+## Build binary and docker images
+build: 
 	stack build
-
-run: 
-	stack build && stack exec notion-ocr-service-exe
+	BINARY_PATH=".stack-work/dist/x86_64-linux/Cabal-2.4.0.1/build/notion-ocr-plugin/notion-ocr-plugin-exe" docker-compose build
