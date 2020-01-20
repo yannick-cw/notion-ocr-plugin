@@ -5,5 +5,5 @@ services:
       context: .
       args:
         - BINARY_PATH
-    image: fpco/notion-ocr-plugin
+    image: rincewind373/notion-ocr-plugin
     command: /opt/notion-ocr-plugin/notion-ocr-plugin
