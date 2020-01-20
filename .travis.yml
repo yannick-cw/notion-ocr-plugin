@@ -1,54 +1,48 @@
-# Use new container infrastructure to enable caching
 sudo: false
-
-# Activate docker
 services:
-  - docker
-
-language: haskell
-
-# Caching so the next build will be fast too.
+- docker
+language: generic
 cache:
   directories:
-    - $HOME/.ghc
-    - $HOME/.cabal
-    - $HOME/.stack
-    - $TRAVIS_BUILD_DIR/.stack-work
-
+  - "$HOME/.ghc"
+  - "$HOME/.cabal"
+  - "$HOME/.stack"
+  - "$TRAVIS_BUILD_DIR/.stack-work"
 matrix:
   include:
-    # The Stack builds. We can pass in arbitrary Stack arguments via the ARGS
-    # variable, such as using --stack-yaml to point to a different file.
-    - env: BUILD=stack ARGS="--resolver lts-14"
-      compiler: ": #stack 8.6.5"
-      addons: { apt: { packages: [libgmp-dev] } }
-
+  - env: BUILD=stack ARGS="--resolver lts-14"
+    compiler: ": #stack 8.6.5"
+    addons:
+      apt:
+        packages:
+        - libgmp-dev
 before_install:
-  # Using compiler above sets CC to an invalid value, so unset it
-  - unset CC
+- openssl aes-256-cbc -K $encrypted_42c9684468b2_key -iv $encrypted_42c9684468b2_iv
+  -in travis_rsa.enc -out /tmp/travis_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/travis_rsa
+- ssh-add /tmp/travis_rsa
+- unset CC
+- export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$HOME/.local/bin:/opt/alex/$ALEXVER/bin:/opt/happy/$HAPPYVER/bin:$HOME/.cabal/bin:$PATH
+- mkdir -p ~/.local/bin
+- |
+  travis_retry curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
-  # Download and unpack the stack executable
-  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$HOME/.local/bin:/opt/alex/$ALEXVER/bin:/opt/happy/$HAPPYVER/bin:$HOME/.cabal/bin:$PATH
-  - mkdir -p ~/.local/bin
-  - |
-    travis_retry curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
-
-    # Use the more reliable S3 mirror of Hackage
-    mkdir -p $HOME/.cabal
-    echo 'remote-repo: hackage.haskell.org:http://hackage.fpcomplete.com/' > $HOME/.cabal/config
-    echo 'remote-repo-cache: $HOME/.cabal/packages' >> $HOME/.cabal/config
-
+  # Use the more reliable S3 mirror of Hackage
+  mkdir -p $HOME/.cabal
+  echo 'remote-repo: hackage.haskell.org:http://hackage.fpcomplete.com/' > $HOME/.cabal/config
+  echo 'remote-repo-cache: $HOME/.cabal/packages' >> $HOME/.cabal/config
 install:
-  - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
-  - if [ -f configure.ac ]; then autoreconf -i; fi
-  - |
-    # Build the dependencies
-    stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
-
+- echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo
+  '?')]"
+- if [ -f configure.ac ]; then autoreconf -i; fi
+- |
+  # Build the dependencies
+  stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
 script:
-  - |
-    stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
+- 'stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
 
+'
 deploy:
   skip_cleanup: true
   provider: script

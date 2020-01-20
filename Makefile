@@ -7,3 +7,4 @@ build:
 release:
 	echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
 	docker push rincewind373/notion-ocr-plugin:${VERSION}
+	VERSION=${VERSION} ./deploy.sh
