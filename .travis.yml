@@ -42,12 +42,16 @@ install:
   - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
   - if [ -f configure.ac ]; then autoreconf -i; fi
   - |
-    set -ex
     # Build the dependencies
     stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
 
 script:
   - |
-    set -ex
     stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
-    make build
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: make build && make release
+  on:
+    branch: master
