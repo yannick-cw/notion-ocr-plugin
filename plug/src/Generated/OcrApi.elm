@@ -66,7 +66,7 @@ getGetInitState query_token toMsg =
             , headers =
                 []
             , url =
-                Url.Builder.crossOrigin "http://localhost:8081"
+                Url.Builder.crossOrigin "http://64.227.2.193:8081"
                     [ "getInitState"
                     ]
                     params
@@ -96,7 +96,7 @@ postRunOnce query_token toMsg =
             , headers =
                 []
             , url =
-                Url.Builder.crossOrigin "http://localhost:8081"
+                Url.Builder.crossOrigin "http://64.227.2.193:8081"
                     [ "runOnce"
                     ]
                     params
@@ -129,7 +129,7 @@ postSetSyncState query_token body toMsg =
             , headers =
                 []
             , url =
-                Url.Builder.crossOrigin "http://localhost:8081"
+                Url.Builder.crossOrigin "http://64.227.2.193:8081"
                     [ "setSyncState"
                     ]
                     params

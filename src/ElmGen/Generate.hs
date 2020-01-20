@@ -19,7 +19,7 @@ import           Servant.Elm                    ( DefineElm(DefineElm)
                                                 )
 
 myElmOpts :: ElmOptions
-myElmOpts = defElmOptions { urlPrefix = Static "http://localhost:8081" }
+myElmOpts = defElmOptions { urlPrefix = Static "http://64.227.2.193:8081" }
 
 
 gen :: IO ()

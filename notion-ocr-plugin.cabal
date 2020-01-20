@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d0a393ffe1b1504b2be6efe6f852e00f1019619f27eadd824d7f73803370e5e9
+-- hash: 469af4296158c9c48656be79889735b802b8ba096504a2f6d42d7a1110cea887
 
 name:           notion-ocr-plugin
-version:        0.1.0.0
+version:        0.1.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-plugin#readme>
 homepage:       https://github.com/yannick-cw/notion-ocr-plug#readme
 bug-reports:    https://github.com/yannick-cw/notion-ocr-plug/issues
