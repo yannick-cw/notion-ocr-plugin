@@ -18,6 +18,7 @@ type OcrApi
   = "getInitState" :> QueryParam "token" Text :> Get '[JSON] InitState 
   :<|> "runOnce" :> QueryParam "token" Text :> Post  '[JSON] () 
   :<|> "setSyncState" :> QueryParam "token" Text :> ReqBody '[JSON] SyncState :> Post '[JSON] ()
+  :<|> "ping" :> Get '[JSON] Text
 
 newtype InitState = InitState { syncState :: SyncState } deriving (Eq, Show, Generic)
 data SyncState = SyncOn | SyncOff deriving (Eq, Show, Generic)

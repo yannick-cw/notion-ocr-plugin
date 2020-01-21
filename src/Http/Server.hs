@@ -36,6 +36,7 @@ server =
   maybe (fail missingTkn) getInitState -- TODO fix failing here, reject instead
     :<|> maybe (fail missingTkn) runOnce
     :<|> maybe (fail missingTkn) setSyncState
+    :<|> return "pong"
   where missingTkn = "Please specify the token parameter"
 
 ocrApi :: Proxy OcrApi
