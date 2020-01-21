@@ -6,4 +6,3 @@ services:
       args:
         - BINARY_PATH
     image: "rincewind373/notion-ocr-plugin:${VERSION}"
-    command: /opt/notion-ocr-plugin/notion-ocr-plugin
