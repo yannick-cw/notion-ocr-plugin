@@ -37,6 +37,8 @@ packages:
 extra-deps:
 - github: yannick-cw/notion-ocr
   commit: d323ae367d8379213ebd3d62b2ba71ed483abe3d
+- github: yannick-cw/notion-api
+  commit: 672b3cfe0d9191eab09a2db8beba176810e0b266
 - witherable-0.3.5@sha256:6590a15735b50ac14dcc138d4265ff1585d5f3e9d3047d5ebc5abf4cd5f50084,1476
 - witherable-class-0@sha256:91f05518f9f4af5b02424f13ee7dcdab5d6618e01346aa2f388a72ff93e2e501,775
   

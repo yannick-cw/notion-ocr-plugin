@@ -19,6 +19,20 @@ packages:
   original:
     url: https://github.com/yannick-cw/notion-ocr/archive/d323ae367d8379213ebd3d62b2ba71ed483abe3d.tar.gz
 - completed:
+    size: 7739
+    url: https://github.com/yannick-cw/notion-api/archive/672b3cfe0d9191eab09a2db8beba176810e0b266.tar.gz
+    cabal-file:
+      size: 2327
+      sha256: 11b73e8c670915eb072c00b65662150c0fa5fb3b880a085f05482aff6222f232
+    name: notion-api
+    version: 0.0.1
+    sha256: 84e26d07ed3f907848bd4c43c0e1adec85f2fe7dea58d954dc5c7d37fc3b6413
+    pantry-tree:
+      size: 749
+      sha256: e756df7ffebc70ddd833ced6fe57fedd80cafa75e38ca243a6476752aa7702c4
+  original:
+    url: https://github.com/yannick-cw/notion-api/archive/672b3cfe0d9191eab09a2db8beba176810e0b266.tar.gz
+- completed:
     hackage: witherable-0.3.5@sha256:6590a15735b50ac14dcc138d4265ff1585d5f3e9d3047d5ebc5abf4cd5f50084,1476
     pantry-tree:
       size: 271

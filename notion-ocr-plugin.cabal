@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 469af4296158c9c48656be79889735b802b8ba096504a2f6d42d7a1110cea887
+-- hash: 2fff64691d8f290dc1fad93aad9fda5e62c3fdecf5af2dd39871da87ef252efe
 
 name:           notion-ocr-plugin
-version:        0.1.0
+version:        0.1.2
 description:    Please see the README on GitHub at <https://github.com/githubuser/notion-ocr-plugin#readme>
 homepage:       https://github.com/yannick-cw/notion-ocr-plug#readme
 bug-reports:    https://github.com/yannick-cw/notion-ocr-plug/issues
@@ -55,6 +55,7 @@ library
     , lens
     , lens-aeson
     , mtl
+    , notion-api
     , notion-ocr
     , servant
     , servant-elm
@@ -88,6 +89,7 @@ executable elm-gen-exe
     , lens
     , lens-aeson
     , mtl
+    , notion-api
     , notion-ocr
     , notion-ocr-plugin
     , servant
@@ -122,6 +124,7 @@ executable notion-ocr-plugin-exe
     , lens
     , lens-aeson
     , mtl
+    , notion-api
     , notion-ocr
     , notion-ocr-plugin
     , servant
@@ -157,6 +160,7 @@ test-suite notion-ocr-plugin-test
     , lens
     , lens-aeson
     , mtl
+    , notion-api
     , notion-ocr
     , notion-ocr-plugin
     , servant
